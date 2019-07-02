@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addColumn } from './.redux/actions';
 import Column from './column';
+import add from './images/add';
 
 // Shows the user all the active tasks
 class Dashboard extends React.Component {
@@ -40,6 +41,7 @@ class Dashboard extends React.Component {
                 }
 
                 <div className="add" onClick={() => this.newColumn()}>
+                    <img src={add} />
                     Add Column
                 </div>
             </div>

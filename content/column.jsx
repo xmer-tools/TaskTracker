@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Input from './library/input';
 import { renameColumn } from './.redux/actions';
+import add from './images/add';
 
 // Shows the user all the active tasks
 class Column extends React.Component {
@@ -8,7 +9,6 @@ class Column extends React.Component {
         return (
             <div className="Column">
                 <div className="header">
-                    <div />
                     <div>
                         {(() => {
                             if(this.props.new) 
@@ -28,7 +28,7 @@ class Column extends React.Component {
                         })()}
                     </div>
                     <div>
-                        Add
+                        <img src={add} />
                     </div>
                 </div>
             </div>
