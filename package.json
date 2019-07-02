@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Xmer-Tools/TaskTracker#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "mongoose": "^5.6.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {

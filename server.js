@@ -1,12 +1,8 @@
 var path = require('path');
 
 var express = require('express'),
+    {Column, connectDb} = require('./mongoose/.connect.js');
     app = express();
-
-const taskList = [{
-    name: "Test",
-    description: "Test Desc"
-}];
 
 module.exports = cb => {
     app.use('/public', express.static(path.join(__dirname, '.public'),{
@@ -19,13 +15,32 @@ module.exports = cb => {
     });
 
     const io = io => {
-        io.on('connection', socket => {
-            console.log('user connected');
+        // Connects to the database before establishing the socket.io
+        connectDb().then(() => {
+            // Socket.io section
+            io.on('connection', socket => {
+                
+                Column.find({}, (err, list) => {
+                    if(err)
+                        console.log(err);
 
-            socket.emit('initTasks', taskList);
-            socket.on('addTask', task => {
-                console.log('new task!', task);
-                taskList.push(task);
+                    socket.emit('initColumns', list);
+                });
+
+                socket.on('addColumn', column => {
+                    var col = new Column();
+                    col.title = column.title;
+
+                    // Saves the column via mongoose
+                    col.save((err, record) => {
+                        if(err)
+                            console.log(err);
+
+                        // Sends the column to all users
+                        else 
+                            io.emit('addColumn', record);
+                    });
+                });
             });
         });
     }

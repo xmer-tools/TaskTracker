@@ -1,24 +1,29 @@
 import openSocket from 'socket.io-client';
-import { actions, initTasks } from './actions';
+import { actions, addColumn, initColumns } from './actions';
 
 const socket = openSocket(window.location.origin);
 
 // Connects to socket io to send and receive via redux actions
 export default store => {
-    // Receiving actions from server
-    socket.on('initTasks', tasks => {
-        store.dispatch(initTasks(tasks));
-    });
+    // Used when the socket sends us something
+    // Prevents broadcast loops
+    var safeDispatch = action => {
+        action.loop = true;
+        store.dispatch(action);
+    }
 
+    // Receiving actions from server
+    socket.on('initColumns', columns => safeDispatch(initColumns(columns)));
+    socket.on('addColumn', column => safeDispatch(addColumn(column)));
 
     // Sending actions to server
     return next => action => {
-        console.log('action', action);
-
-        switch (action.type) {
-            case actions.ADD_TASK:
-                socket.emit('addTask', action.task);
-        }
+        if(!action.loop)
+            switch (action.type) {
+                case actions.ADD_COLUMN:
+                    socket.emit('addColumn', action.column);
+                    return;
+            }
 
         next(action);
     }

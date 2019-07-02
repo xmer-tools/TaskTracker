@@ -1,19 +1,47 @@
 $background: lightgray;
+$dark: gray;
 
 body {
-    box-sizing: border-box;
     background-color: $background;
+    height: 100vh;
+    margin: 0;
+    overflow-y: hidden;
+
+    * {
+        box-sizing: border-box;
+    }
 
     .Dashboard {
         display: flex;
+        height: 100%;
+        padding: 2.5rem 1rem;
 
-        .Column {
+        & > * {
             flex: 1 1 1px;
             min-width: 15rem;
             max-width: 25rem;
+            height: 100%;
 
+            border-radius: 4px;
+            margin: 0 0.25rem;
+        }
+
+        & > .add {
+            border: 2px dashed $dark;
+
+            text-align: center;
+            line-height: 100%;
+            vertical-align: middle;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            cursor: pointer;
+        }
+
+        .Column {
             background-color: white;
-            border-radius: 2px;
 
             .header {
                 display: flex;

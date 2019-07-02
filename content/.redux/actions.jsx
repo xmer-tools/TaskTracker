@@ -1,18 +1,18 @@
 export const actions = {
-    INIT_TASKS: "Initializes the task list from the db",
-    ADD_TASK: "Creates a new task"
+    INIT_COLUMNS: "Initializes the column list from the db",
+    ADD_COLUMN: "Creates a new column"
 };
 
-export const initTasks = tasks => {
+export const initColumns = columns => {
     return {
-        type: actions.INIT_TASKS,
-        tasks
+        type: actions.INIT_COLUMNS,
+        columns
     };
 };
 
-export const addTask = task => {
+export const addColumn = column => {
     return {
-        type: actions.ADD_TASK,
-        task
+        type: actions.ADD_COLUMN,
+        column
     };
 };
