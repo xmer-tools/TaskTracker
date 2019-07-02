@@ -9,12 +9,14 @@ class Task extends React.Component {
                     if(this.props.new)
                         return (
                             <Input autoFocus
+                                multiline
                                 onEnter={val => this.props.addTask(val)}
                             />
                         );
 
                     return (
                         <Input 
+                            multiline
                             key={this.props.title}
                             value={this.props.title}
                             onEnter={() => {}}

@@ -19,6 +19,8 @@ body {
 
     .Input {
         background-color: white;
+        width: 100%;
+        max-width: 100%;
 
         &:not(:focus) {
             border: none;
@@ -59,7 +61,7 @@ body {
             background-color: $light;
 
             .header {
-                padding-top: 3px;
+                padding: 3px 5px;
                 display: flex;
                 text-align: center;
 
@@ -71,7 +73,6 @@ body {
                     &:last-of-type {
                         flex-grow: 1;
                         text-align: right;
-                        margin-right: 5px;
 
                         cursor: pointer;
 
@@ -81,6 +82,12 @@ body {
                         }
                     }
                 }
+            }
+
+            .Task {
+                background-color: white;
+                border-radius: 2px;
+                margin: 10px 5px;
             }
         }
     }

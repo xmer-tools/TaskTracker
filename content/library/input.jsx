@@ -16,20 +16,29 @@ class Input extends React.Component {
     }
 
     render() {
+        var props = {
+            className: "Input",
+            type: "Text",
+            autoFocus: this.props.autoFocus,
+            value: this.state.val || this.props.value || undefined,
+            onChange: e => this.handleKeyDown(e),
+            onKeyDown: e => this.handleKeyDown(e)
+        }
+
+        if(this.props.multiline)
+            return (
+                <textarea {...props} />
+            );
+
         return (
-            <input 
-                className="Input"
-                type="text"
-                autoFocus={this.props.autoFocus}
-                value={this.state.val || this.props.value || undefined}
-                onChange={e => this.handleKeyDown(e)}
-                onKeyDown={e => this.handleKeyDown(e)} />
-        )
+            <input {...props} />
+        );
     }
 }
 
 Input.propTypes = {
     onEnter: PropTypes.func.isRequired, // Function to run when the enter key is pressed
+    multiline: PropTypes.bool, // If there is a possibility for multiple lines
 
     value: PropTypes.string, // Default Value for this field
     autoFocus: PropTypes.bool, // If true, this input field will be auto focused
