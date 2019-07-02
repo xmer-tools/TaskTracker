@@ -1,20 +1,25 @@
-require('./base.scss');
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import middleware from '_redux/middleware';
+import app from '_redux/reducers';
+import Dashboard from './dashboard';
 
+// Redux Setup
+let store = createStore(app, applyMiddleware(middleware));
+global.getState = () => store.getState();
+
+// Controls the entire screen
+// This component should never be unloaded
+require('./base.scss');
 class Base extends React.Component{
     constructor(props){
         super(props);
-        
-        this.state = {};
-        
-        global.toggleMenu = () => {
-            this.setState({hideMenu: !this.state.hideMenu});
-        };
     }
     
     render() {
         return(
             <div className='MainArea'>
-                Hello World
+                <Dashboard />
             </div>
         );
     }
@@ -23,6 +28,8 @@ class Base extends React.Component{
 export default Base;
 
 ReactDOM.render(
-    <Base />,
+    <Provider store={store}>
+        <Base />
+    </Provider>,
     document.getElementById('content')
 );

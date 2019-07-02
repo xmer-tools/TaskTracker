@@ -1,0 +1,28 @@
+$background: lightgray;
+
+body {
+    box-sizing: border-box;
+    background-color: $background;
+
+    .Dashboard {
+        display: flex;
+
+        .Column {
+            flex: 1 1 1px;
+            min-width: 15rem;
+            max-width: 25rem;
+
+            background-color: white;
+            border-radius: 2px;
+
+            .header {
+                display: flex;
+                text-align: center;
+
+                & > div {
+                    flex: 1 1 1px;
+                }
+            }
+        }
+    }
+}
