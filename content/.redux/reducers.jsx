@@ -9,6 +9,14 @@ const columns = (state = [], action) => {
 
         case actions.ADD_COLUMN:
             return [...state, action.column]
+
+        case actions.RENAME_COLUMN:
+            return state.map(col => {
+                if(col._id === action.id)
+                    col.title = action.title;
+
+                return col;
+            });
         
         default:
             return state;

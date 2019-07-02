@@ -41,6 +41,21 @@ module.exports = cb => {
                             io.emit('addColumn', record);
                     });
                 });
+
+                socket.on('renameColumn', (id, title) => {
+                    Column.findById(id, (err, record) => {
+                        if(err)
+                            console.log(err);
+
+                        record.title = title;
+                        record.save(err => {
+                            if(err)
+                                console.log(error);
+
+                                socket.broadcast.emit('renameColumn', id, title);
+                        });
+                    })
+                });
             });
         });
     }

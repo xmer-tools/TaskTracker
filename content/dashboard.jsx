@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
         return (
             <div className="Dashboard">
                 {this.props.columns.map(col => {
-                    return <Column key={col._id} data={col} />
+                    return <Column key={col._id} {...col} />
                 })}
 
                 {this.state.newColumn ? 

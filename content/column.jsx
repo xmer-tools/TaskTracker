@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import Input from './library/input';
+import { renameColumn } from './.redux/actions';
 
 // Shows the user all the active tasks
 class Column extends React.Component {
@@ -7,9 +8,7 @@ class Column extends React.Component {
         return (
             <div className="Column">
                 <div className="header">
-                    <div>
-                        [-]
-                    </div>
+                    <div />
                     <div>
                         {(() => {
                             if(this.props.new) 
@@ -19,7 +18,13 @@ class Column extends React.Component {
                                     />
                                 );
 
-                            return this.props.data.title;
+                            return (
+                                <Input 
+                                    key={this.props.title}
+                                    value={this.props.title}
+                                    onEnter={val => this.props.renameColumn(this.props._id, val)}
+                                />
+                            );
                         })()}
                     </div>
                     <div>
@@ -32,7 +37,8 @@ class Column extends React.Component {
 }
 
 Column.propTypes = {
-    data: PropTypes.object, // Mongo Column Data
+    _id: PropTypes.string, // Mongo ID for this column
+    title: PropTypes.string, // Title of the column
 
     // These are required only if this is a new column
     new: PropTypes.bool, // If this column is brand new
@@ -43,6 +49,7 @@ const mapProps = state => ({
 });
 
 const mapDispatch = dispatch => ({
+    renameColumn: (id, val) => dispatch(renameColumn(id, val))
 });
 
 export default connect(mapProps, mapDispatch)(Column);

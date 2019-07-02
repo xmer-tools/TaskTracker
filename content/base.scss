@@ -11,6 +11,13 @@ body {
         box-sizing: border-box;
     }
 
+    .Input {
+        &:not(:focus) {
+            border: none;
+            text-align: center;
+        }
+    }
+
     .Dashboard {
         display: flex;
         height: 100%;
@@ -44,6 +51,7 @@ body {
             background-color: white;
 
             .header {
+                padding-top: 3px;
                 display: flex;
                 text-align: center;
 
