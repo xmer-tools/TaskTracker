@@ -1,10 +1,34 @@
 import { connect } from 'react-redux';
 import Input from './library/input';
-import { renameColumn } from './.redux/actions';
+import { renameColumn, addTask } from './.redux/actions';
 import add from './images/add';
+import Task from './Task';
 
 // Shows the user all the active tasks
 class Column extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            newTask: false
+        };
+    }
+
+    // Allows the user to create a new task
+    newTask() {
+        this.setState({
+            newTask: true
+        });
+    }
+
+    // Sends the new task through redux
+    addTask(val) {
+        this.props.addTask(this.props._id, val);
+        this.setState({
+            newTask: false
+        });
+    }
+
     render() {
         return (
             <div className="Column">
@@ -27,10 +51,18 @@ class Column extends React.Component {
                             );
                         })()}
                     </div>
-                    <div>
+                    <div onClick={() => this.newTask()}>
                         <img src={add} />
                     </div>
                 </div>
+                {this.props.tasks ? this.props.tasks.map(task => {
+                    return <Task key={task._id} {...task} />;
+                }) : null} 
+
+                {this.state.newTask ? 
+                    <Task new addTask={title => this.addTask(title)} /> :
+                    null
+                }
             </div>
         )
     }
@@ -49,7 +81,8 @@ const mapProps = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    renameColumn: (id, val) => dispatch(renameColumn(id, val))
+    renameColumn: (id, val) => dispatch(renameColumn(id, val)),
+    addTask: (id, val) => dispatch(addTask(id, val))
 });
 
 export default connect(mapProps, mapDispatch)(Column);

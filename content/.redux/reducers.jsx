@@ -17,6 +17,16 @@ const columns = (state = [], action) => {
 
                 return col;
             });
+
+        case actions.ADD_TASK:
+            return state.map(col => {
+                // action.title originally is used to store the title only
+                // After the server saves the task action.title is used to store the entire task object
+                if(col._id === action.id)
+                    col.tasks = [...col.tasks, action.title];
+
+                return col;
+            });
         
         default:
             return state;

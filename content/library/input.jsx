@@ -8,7 +8,7 @@ class Input extends React.Component {
     }
 
     handleKeyDown(e) {
-        if(this.props.onEnter && e.key === "Enter") 
+        if(this.props.onEnter && e.key === "Enter")
             this.props.onEnter(e.target.value);
 
         else if (this.props.value)
@@ -21,7 +21,7 @@ class Input extends React.Component {
                 className="Input"
                 type="text"
                 autoFocus={this.props.autoFocus}
-                value={this.state.val || this.props.value || null}
+                value={this.state.val || this.props.value || undefined}
                 onChange={e => this.handleKeyDown(e)}
                 onKeyDown={e => this.handleKeyDown(e)} />
         )

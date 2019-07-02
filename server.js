@@ -54,7 +54,24 @@ module.exports = cb => {
 
                                 socket.broadcast.emit('renameColumn', id, title);
                         });
-                    })
+                    });
+                });
+
+                // Adds a task to the column (specified by id)
+                socket.on('addTask', (id, title) => {
+                    Column.findById(id, (err, record) => {
+                        if(err)
+                            console.log(err);
+                        
+                        record.tasks.push({title: title});
+                        record.save(err => {
+                            if(err)
+                                console.log(err);
+
+                            else 
+                                io.emit('addTask', id, record.tasks[record.tasks.length - 1]);
+                        });
+                    });
                 });
             });
         });
