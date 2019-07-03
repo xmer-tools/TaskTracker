@@ -38,10 +38,11 @@ export default store => {
                 case actions.DRAG_END:
                     var dragData = store.getState().dragging;
 
-                    // It's a task being moved
-                    if(dragData.task)
+                    // It's a task being moved and isn't being moved to the same column
+                    if(dragData.task && dragData.column != dragData.target.column) {
                         store.dispatch(moveTask(dragData.task, dragData.column, dragData.target.column));
                         socket.emit('moveTask', dragData.task, dragData.column, dragData.target.column);
+                    }
 
                     // TODO: it could also be a column being moved
                     return;
