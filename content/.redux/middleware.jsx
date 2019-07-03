@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-import { actions, addColumn, initColumns, renameColumn, addTask } from './actions';
+import { actions, addColumn, addTask, initColumns, renameColumn } from './actions';
 
 const socket = openSocket(window.location.origin);
 
@@ -20,6 +20,7 @@ export default store => {
 
     // Sending actions to server
     return next => action => {
+        console.log(action);
         if(!action.loop)
             switch (action.type) {
                 case actions.ADD_COLUMN:
@@ -28,6 +29,7 @@ export default store => {
 
                 case actions.RENAME_COLUMN:
                     socket.emit('renameColumn', action.id, action.title);
+                    break;
                 
                 case actions.ADD_TASK:
                     socket.emit('addTask', action.id, action.title);

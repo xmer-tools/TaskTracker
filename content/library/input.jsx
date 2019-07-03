@@ -3,36 +3,61 @@ class Input extends React.Component {
         super(props);
 
         this.state = {
-            val: this.props.value
+            val: this.props.value,
+            focus: this.props.autoFocus
         }
     }
 
     handleKeyDown(e) {
-        if(this.props.onEnter && e.key === "Enter")
-            this.props.onEnter(e.target.value);
+        if(this.props.onEnter && e.key === "Enter") {
+            this.setState({focus: false});
+            this.props.onEnter(this.state.val);
+        }
 
         else if (this.props.value)
             this.setState({val: e.target.value});
+    }
+
+    /**
+     * Sets / unsets the focus of this element
+     * @param {*} blur if this is being blurred
+     */
+    focus(blur){
+        console.log(blur ? "Blurred" : "Focused");
+        this.setState({focus: !blur});
+
+        // Blur should also act as if the user pressed "Enter" to ensure the changes are saved
+        if(blur)
+            this.handleKeyDown({key: "Enter"});
     }
 
     render() {
         var props = {
             className: "Input",
             type: "Text",
-            autoFocus: this.props.autoFocus,
+            autoFocus: this.state.focus,
             value: this.state.val || this.props.value || undefined,
             onChange: e => this.handleKeyDown(e),
-            onKeyDown: e => this.handleKeyDown(e)
+            onKeyDown: e => this.handleKeyDown(e),
+            onBlur: () => this.focus(1)
         }
 
-        if(this.props.multiline)
+        if(this.state.focus) {
+            if(this.props.multiline)
+                return (
+                    <textarea {...props} />
+                );
+
             return (
-                <textarea {...props} />
+                <input {...props} />
             );
+        }
 
         return (
-            <input {...props} />
-        );
+            <div onClick={() => this.focus()} className={props.className}>
+                {props.value}
+            </div>
+        )
     }
 }
 

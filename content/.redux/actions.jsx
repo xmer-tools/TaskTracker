@@ -24,7 +24,6 @@ export const addColumn = column => {
 };
 
 /**
- * 
  * @param {*} id Column ID
  * @param {*} title New Column Title
  */
