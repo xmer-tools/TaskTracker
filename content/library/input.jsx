@@ -23,7 +23,6 @@ class Input extends React.Component {
      * @param {*} blur if this is being blurred
      */
     focus(blur){
-        console.log(blur ? "Blurred" : "Focused");
         this.setState({focus: !blur});
 
         // Blur should also act as if the user pressed "Enter" to ensure the changes are saved

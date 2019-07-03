@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
+import { dragEnd } from './.redux/actions';
 import Input from "./library/input";
-import { dragStart, dragEnd } from './.redux/actions';
 
 // Displays this task
 class Task extends React.Component {
@@ -37,6 +37,7 @@ class Task extends React.Component {
 Task.propTypes = {
     _id: PropTypes.string, // Mongo ID for this task
     title: PropTypes.string, // Title of this task
+    dragStart: PropTypes.func, // Runs when this task starts being dragged - does not require parameters
 
     // These are required only if this is a new column
     new: PropTypes.bool, // If this column is brand new
@@ -47,7 +48,6 @@ const mapProps = state => ({
 });
 
 const mapDispatch = dispatch => ({
-    dragStart: id => dispatch(dragStart(true, id)),
     dragEnd: () => dispatch(dragEnd())
 });
 

@@ -22,7 +22,7 @@ module.exports = cb => {
                 
                 Column.find({}, (err, list) => {
                     if(err)
-                        console.log(err);
+                        console.log("ERR 1", err);
 
                     socket.emit('initColumns', list);
                 });
@@ -34,7 +34,7 @@ module.exports = cb => {
                     // Saves the column via mongoose
                     col.save((err, record) => {
                         if(err)
-                            console.log(err);
+                            console.log("ERR 2", err);
 
                         // Sends the column to all users
                         else 
@@ -45,12 +45,12 @@ module.exports = cb => {
                 socket.on('renameColumn', (id, title) => {
                     Column.findById(id, (err, record) => {
                         if(err)
-                            console.log(err);
+                            console.log("ERR 3", err);
 
                         record.title = title;
                         record.save(err => {
                             if(err)
-                                console.log(error);
+                                console.log("ERR 4", err);
 
                                 socket.broadcast.emit('renameColumn', id, title);
                         });
@@ -61,15 +61,46 @@ module.exports = cb => {
                 socket.on('addTask', (id, title) => {
                     Column.findById(id, (err, record) => {
                         if(err)
-                            console.log(err);
+                            console.log("ERR 5", err);
                         
                         record.tasks.push({title: title});
                         record.save(err => {
                             if(err)
-                                console.log(err);
+                                console.log("ERR 6", err);
 
                             else 
                                 io.emit('addTask', id, record.tasks[record.tasks.length - 1]);
+                        });
+                    });
+                });
+
+                socket.on('moveTask', (task, from, to) => {
+                    Column.findById(from, (err, fromRec) => {
+                        if(err)
+                            console.log("ERR 7", err);
+
+                        var tRecord = fromRec.tasks.splice(
+                            fromRec.tasks.findIndex(t => t._id === task.id), 1
+                        )[0];
+
+                        Column.findById(to, (err, toRec) => {
+                            if(err)
+                                console.log("ERR 9", err);
+
+                            toRec.tasks.push(tRecord); 
+
+                            // This save order was chosen to reduce the risk of losing a task
+                            toRec.save(err => {
+                                if(err)
+                                    console.log("ERR 10", err);
+
+                                fromRec.save(err => {
+                                    if(err)
+                                        console.log("ERR 8", err);
+
+                                    socket.broadcast.emit('moveTask', task, from, to);
+                                });
+                            });
                         });
                     });
                 });

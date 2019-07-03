@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import Input from './library/input';
-import { renameColumn, addTask, dragEnter } from './.redux/actions';
+import { addTask, dragColumnEnter, dragEnd, dragStart, renameColumn } from './.redux/actions';
 import add from './images/add';
+import Input from './library/input';
 import Task from './Task';
 
 // Shows the user all the active tasks
@@ -55,9 +55,9 @@ class Column extends React.Component {
                         <img src={add} />
                     </div>
                 </div>
-                <div onDragEnter={() => this.props.dragEnter(this.props._id)}>
+                <div onDragEnter={() => this.props.dragEnter(this.props._id)} onDragOver={e => e.preventDefault()}>
                     {this.props.tasks ? this.props.tasks.map(task => {
-                        return <Task key={task._id} {...task} />;
+                        return <Task key={task._id} dragStart={() => this.props.dragStart(this.props._id, task._id)} {...task} />;
                     }) : null} 
 
                     {this.state.newTask ? 
@@ -85,7 +85,9 @@ const mapProps = state => ({
 const mapDispatch = dispatch => ({
     renameColumn: (id, val) => dispatch(renameColumn(id, val)),
     addTask: (id, val) => dispatch(addTask(id, val)),
-    dragEnter: id => dispatch(dragEnter(false, id))
+    dragStart: (columnId, taskId) => dispatch(dragStart(columnId, taskId)),
+    dragEnter: id => dispatch(dragColumnEnter(id)),
+    dragEnd: () => dispatch(dragEnd())
 });
 
 export default connect(mapProps, mapDispatch)(Column);

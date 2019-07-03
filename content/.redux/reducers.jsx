@@ -28,6 +28,19 @@ const columns = (state = [], action) => {
                 return col;
             });
 
+        case actions.MOVE_TASK:
+            var fromCol = state.find(col => col._id === action.from),
+                toCol = state.find(col => col._id === action.to),
+                task = fromCol.tasks.splice(
+                    fromCol.tasks.findIndex(task => task._id === action.id), 1
+                );
+
+
+            fromCol.tasks = [...fromCol.tasks];
+            toCol.tasks = [...toCol.tasks, ...task];
+
+            return [...state];
+
         default:
             return state;
     }
@@ -37,12 +50,15 @@ const columns = (state = [], action) => {
 const dragging = (state = {}, action) => {
     switch(action.type) {
         case actions.DRAG_START:
-            console.log(action);
-            state = action;
+            return {
+                column: action.columnId,
+                task: action.taskId
+            };
 
-        case actions.DRAG_OVER:
-            console.log(action);
-            state.target = action.id;
+        case actions.DRAG_OVER_COLUMN:
+            return {...state, target: {
+                column: action.id
+            }};
     }
 
     return state;
