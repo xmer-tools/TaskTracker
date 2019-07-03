@@ -3,6 +3,7 @@ export const actions = {
     ADD_COLUMN: "Creates a new column",
     RENAME_COLUMN: "Changes the name of the specified column",
     ADD_TASK: "Adds a new task to the specified column",
+    RENAME_TASK: "Changes the name of the specified task",
 
     DRAG_START: "User starts dragging an item",
     DRAG_END: "User ends dragging an item",
@@ -88,5 +89,19 @@ export const moveTask = (id, from, to) => {
         id,
         from,
         to
+    }
+}
+
+/**
+ * @param {*} colId column where the task resides
+ * @param {*} taskId id of the task being renamed
+ * @param {*} title new title for the task
+ */
+export const renameTask = (colId, taskId, title) => {
+    return {
+        type: actions.RENAME_TASK,
+        colId,
+        taskId,
+        title
     }
 }

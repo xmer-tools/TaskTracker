@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addTask, dragColumnEnter, dragEnd, dragStart, renameColumn } from './.redux/actions';
+import { addTask, dragColumnEnter, dragEnd, dragStart, renameColumn, renameTask } from './.redux/actions';
 import add from './images/add';
 import Input from './library/input';
 import Task from './Task';
@@ -57,7 +57,11 @@ class Column extends React.Component {
                 </div>
                 <div onDragEnter={() => this.props.dragEnter(this.props._id)} onDragOver={e => e.preventDefault()}>
                     {this.props.tasks ? this.props.tasks.map(task => {
-                        return <Task key={task._id} dragStart={() => this.props.dragStart(this.props._id, task._id)} {...task} />;
+                        return <Task 
+                            key={task._id} 
+                            renameTask={val => this.props.renameTask(this.props._id, task._id, val)}
+                            dragStart={() => this.props.dragStart(this.props._id, task._id)} {...task} 
+                        />;
                     }) : null} 
 
                     {this.state.newTask ? 
@@ -87,7 +91,8 @@ const mapDispatch = dispatch => ({
     addTask: (id, val) => dispatch(addTask(id, val)),
     dragStart: (columnId, taskId) => dispatch(dragStart(columnId, taskId)),
     dragEnter: id => dispatch(dragColumnEnter(id)),
-    dragEnd: () => dispatch(dragEnd())
+    dragEnd: () => dispatch(dragEnd()),
+    renameTask: (colId, taskId, title) => dispatch(renameTask(colId, taskId, title))
 });
 
 export default connect(mapProps, mapDispatch)(Column);

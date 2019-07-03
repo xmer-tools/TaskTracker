@@ -104,6 +104,24 @@ module.exports = cb => {
                         });
                     });
                 });
+
+                socket.on('renameTask', (column, task, title) => {
+                    Column.findById(column, (err, record) => {
+                        if(err)
+                            console.log("ERR 11", err);
+
+                        record.tasks
+                            .find(t => t._id.toString() == task)
+                            .title = title;
+
+                        record.save(err => {
+                            if(err)
+                                console.log("ERR 12", err);
+
+                            socket.broadcast.emit('renameTask', column, task, title);
+                        });
+                    })
+                });
             });
         });
     }

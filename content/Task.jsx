@@ -25,7 +25,7 @@ class Task extends React.Component {
                             multiline
                             key={this.props.title}
                             value={this.props.title}
-                            onEnter={() => {}}
+                            onEnter={val => this.props.renameTask(val)}
                         />
                     );
                 })()}
@@ -38,6 +38,7 @@ Task.propTypes = {
     _id: PropTypes.string, // Mongo ID for this task
     title: PropTypes.string, // Title of this task
     dragStart: PropTypes.func, // Runs when this task starts being dragged - does not require parameters
+    renameTask: PropTypes.func, // Renames this task - requires the new title as the only parameter
 
     // These are required only if this is a new column
     new: PropTypes.bool, // If this column is brand new

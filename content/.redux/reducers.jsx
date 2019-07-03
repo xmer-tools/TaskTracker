@@ -41,6 +41,18 @@ const columns = (state = [], action) => {
 
             return [...state];
 
+        case actions.RENAME_TASK:
+            return state.map(col => {
+                if(col._id == action.colId)
+                    col.tasks = col.tasks.map(task => {
+                        if(task._id == action.taskId)
+                            task.title = action.title;
+
+                        return task;
+                    });
+                return col;
+            });
+
         default:
             return state;
     }

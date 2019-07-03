@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-import { actions, addColumn, addTask, initColumns, moveTask, renameColumn } from './actions';
+import { actions, addColumn, addTask, initColumns, moveTask, renameColumn, renameTask } from './actions';
 
 const socket = openSocket(window.location.origin);
 
@@ -18,6 +18,7 @@ export default store => {
     socket.on('renameColumn', (id, title) => safeDispatch(renameColumn(id, title)));
     socket.on('addTask', (id, title) => safeDispatch(addTask(id, title)));
     socket.on('moveTask', (task, from, to) => safeDispatch(moveTask(task, from, to)));
+    socket.on('renameTask', (colId, taskId, title) => safeDispatch(renameTask(colId, taskId, title)));
 
     // Sending actions to server
     return next => action => {
@@ -35,6 +36,10 @@ export default store => {
                     socket.emit('addTask', action.id, action.title);
                     return;
 
+                case actions.RENAME_TASK:
+                    socket.emit('renameTask', action.colId, action.taskId, action.title);
+                    break;
+
                 case actions.DRAG_END:
                     var dragData = store.getState().dragging;
 
@@ -43,6 +48,7 @@ export default store => {
                         store.dispatch(moveTask(dragData.task, dragData.column, dragData.target.column));
                         socket.emit('moveTask', dragData.task, dragData.column, dragData.target.column);
                     }
+
 
                     // TODO: it could also be a column being moved
                     return;
