@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Input from './library/input';
-import { renameColumn, addTask } from './.redux/actions';
+import { renameColumn, addTask, dragEnter } from './.redux/actions';
 import add from './images/add';
 import Task from './Task';
 
@@ -55,14 +55,16 @@ class Column extends React.Component {
                         <img src={add} />
                     </div>
                 </div>
-                {this.props.tasks ? this.props.tasks.map(task => {
-                    return <Task key={task._id} {...task} />;
-                }) : null} 
+                <div onDragEnter={() => this.props.dragEnter(this.props._id)}>
+                    {this.props.tasks ? this.props.tasks.map(task => {
+                        return <Task key={task._id} {...task} />;
+                    }) : null} 
 
-                {this.state.newTask ? 
-                    <Task new addTask={title => this.addTask(title)} /> :
-                    null
-                }
+                    {this.state.newTask ? 
+                        <Task new addTask={title => this.addTask(title)} /> :
+                        null
+                    }
+                </div>
             </div>
         )
     }
@@ -82,7 +84,8 @@ const mapProps = state => ({
 
 const mapDispatch = dispatch => ({
     renameColumn: (id, val) => dispatch(renameColumn(id, val)),
-    addTask: (id, val) => dispatch(addTask(id, val))
+    addTask: (id, val) => dispatch(addTask(id, val)),
+    dragEnter: id => dispatch(dragEnter(false, id))
 });
 
 export default connect(mapProps, mapDispatch)(Column);

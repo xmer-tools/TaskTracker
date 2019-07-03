@@ -1,10 +1,16 @@
+import { connect } from 'react-redux';
 import Input from "./library/input";
+import { dragStart, dragEnd } from './.redux/actions';
 
 // Displays this task
 class Task extends React.Component {
     render() {
         return (
-            <div className="Task">
+            <div className="Task" 
+                draggable={!this.props.new} 
+                onDragStart={() => this.props.dragStart(this.props._id)}
+                onDragEnd={() => this.props.dragEnd()}
+            >
                 {(()=>{
                     if(this.props.new)
                         return (
@@ -37,4 +43,12 @@ Task.propTypes = {
     addTask: PropTypes.func, // One parameter, value. Saves the new task to the database
 }
 
-export default Task;
+const mapProps = state => ({
+});
+
+const mapDispatch = dispatch => ({
+    dragStart: id => dispatch(dragStart(true, id)),
+    dragEnd: () => dispatch(dragEnd())
+});
+
+export default connect(mapProps, mapDispatch)(Task);

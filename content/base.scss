@@ -59,6 +59,8 @@ body {
 
         .Column {
             background-color: $light;
+            display: flex;
+            flex-direction: column;
 
             .header {
                 padding: 3px 5px;
@@ -82,6 +84,10 @@ body {
                         }
                     }
                 }
+            }
+
+            & >  *:not(.header) {
+                flex: 10 1 1px;
             }
 
             .Task {

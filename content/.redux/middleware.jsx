@@ -32,6 +32,11 @@ export default store => {
                 case actions.ADD_TASK:
                     socket.emit('addTask', action.id, action.title);
                     return;
+
+                case actions.DRAG_END:
+                    // TODO: Determine where the task came from and where it's going
+                    // TODO: If it's a task - it could also be a column being moved
+                    return;
             }
 
         next(action);

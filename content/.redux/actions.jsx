@@ -3,6 +3,10 @@ export const actions = {
     ADD_COLUMN: "Creates a new column",
     RENAME_COLUMN: "Changes the name of the specified column",
     ADD_TASK: "Adds a new task to the specified column",
+
+    DRAG_START: "User starts dragging an item",
+    DRAG_END: "User ends dragging an item",
+    DRAG_OVER: "User drags an item over another item"
 };
 
 export const initColumns = columns => {
@@ -41,5 +45,35 @@ export const addTask = (id, title) => {
         type: actions.ADD_TASK,
         id,
         title
+    };
+};
+
+/**
+ * @param {*} task If the passed in id is the tag ID (true) or column (false)
+ * @param {*} id ID of the task or column being dragged
+ */
+export const dragStart = (task, id) => {
+    return {
+        type: actions.DRAG_START,
+        task,
+        id
+    };
+};
+
+export const dragEnd = () => {
+    return {
+        type: actions.DRAG_END
+    }
+}
+
+/**
+ * @param {*} task If the passed in id is the tag ID (true) or column (false)
+ * @param {*} id ID of the task or column being dragged
+ */
+export const dragEnter = (task, id) => {
+    return {
+        type: actions.DRAG_OVER,
+        task,
+        id
     }
 }

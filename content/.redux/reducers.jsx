@@ -27,12 +27,28 @@ const columns = (state = [], action) => {
 
                 return col;
             });
-        
+
         default:
             return state;
     }
 };
 
+// Controls the dragging features
+const dragging = (state = {}, action) => {
+    switch(action.type) {
+        case actions.DRAG_START:
+            console.log(action);
+            state = action;
+
+        case actions.DRAG_OVER:
+            console.log(action);
+            state.target = action.id;
+    }
+
+    return state;
+}
+
 export default combineReducers({
-    columns
+    columns,
+    dragging
 });
