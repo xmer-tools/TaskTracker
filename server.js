@@ -122,6 +122,25 @@ module.exports = cb => {
                         });
                     })
                 });
+
+                socket.on('removeTask', (task, col) => {
+                    Column.findById(col, (err, record) => {
+                        if(err)
+                            console.log("ERR 12", err);
+
+                        record.tasks.splice(
+                            record.tasks.findIndex(t => t._id.toString() == task),
+                            1
+                        );
+
+                        record.save(err => {
+                            if(err)
+                                console.log("ERR 13", err);
+
+                            socket.broadcast.emit('removeTask', task, col);
+                        });
+                    });
+                })
             });
         });
     }

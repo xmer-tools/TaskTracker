@@ -53,13 +53,27 @@ const columns = (state = [], action) => {
                 return col;
             });
 
+        case actions.REMOVE_TASK:
+            return state.map(col => {
+                if(col._id == action.col) {
+                    col.tasks.splice(
+                        col.tasks.findIndex(task => task._id == action.task),
+                        1
+                    );
+
+                    col.tasks = [...col.tasks];
+                }
+
+                return col;
+            });
+
         default:
             return state;
     }
 };
 
 // Controls the dragging features
-const dragging = (state = {}, action) => {
+const dragging = (state = null, action) => {
     switch(action.type) {
         case actions.DRAG_START:
             return {
@@ -68,9 +82,22 @@ const dragging = (state = {}, action) => {
             };
 
         case actions.DRAG_OVER_COLUMN:
-            return {...state, target: {
-                column: action.id
-            }};
+            return {
+                ...state, 
+                target: {
+                    column: action.id
+                    // TODO: add task here so the user can set task index
+                }
+            };
+
+        case actions.DRAG_OVER_TRASH:
+            return {
+                ...state, 
+                target: "Trash"
+            };
+
+        case actions.DRAG_END:
+            return null;
     }
 
     return state;

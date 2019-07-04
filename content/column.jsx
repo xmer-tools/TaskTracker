@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { addTask, dragColumnEnter, dragEnd, dragStart, renameColumn, renameTask } from './.redux/actions';
 import add from './images/add';
 import Input from './library/input';
-import Task from './Task';
+import Task from './task';
 
 // Shows the user all the active tasks
 class Column extends React.Component {

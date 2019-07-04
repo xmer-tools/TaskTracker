@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addColumn } from './.redux/actions';
 import Column from './column';
+import Trash from './trash';
 import add from './images/add';
 
 // Shows the user all the active tasks
@@ -44,6 +45,8 @@ class Dashboard extends React.Component {
                     <img src={add} />
                     Add Column
                 </div>
+
+                <Trash />
             </div>
         )
     }

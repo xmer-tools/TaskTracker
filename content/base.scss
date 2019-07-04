@@ -8,6 +8,15 @@ body {
     margin: 0;
     overflow-y: hidden;
 
+    // This makes drag and dropping easier
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+
     * {
         box-sizing: border-box;
     }
@@ -29,12 +38,35 @@ body {
         }
     }
 
+    .Trash {
+        position: absolute;
+        bottom: -100px;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+
+        width: 100px;
+        height: 100px;
+        padding: 10px;
+
+        background-color: $light;
+        border: 3px solid $dark;
+        border-radius: 50%;
+
+        transition: bottom 250ms;
+
+        &.Dragging {
+            bottom: 25px;
+        }
+    }
+
     .Dashboard {
         display: flex;
         height: 100%;
         padding: 2.5rem 1rem;
 
-        & > * {
+        & > *:not(.Trash) {
             flex: 1 1 1px;
             min-width: 15rem;
             max-width: 25rem;
@@ -95,6 +127,7 @@ body {
                 background-color: white;
                 border-radius: 2px;
                 margin: 10px 5px;
+                padding: 5px;
 
                 cursor: grab;
             }

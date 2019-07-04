@@ -11,7 +11,7 @@ class Input extends React.Component {
     handleKeyDown(e) {
         if(this.props.onEnter && e.key === "Enter") {
             this.setState({focus: false});
-            this.props.onEnter(this.state.val);
+            this.props.onEnter(this.state.val || e.target.value);
         }
 
         else if (this.props.value)

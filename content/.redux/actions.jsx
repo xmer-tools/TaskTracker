@@ -8,8 +8,10 @@ export const actions = {
     DRAG_START: "User starts dragging an item",
     DRAG_END: "User ends dragging an item",
     DRAG_OVER_COLUMN: "User dragged an item over a column",
+    DRAG_OVER_TRASH: "User dragged the item over the trash can",
 
-    MOVE_TASK: "Moves a task from one column to another"
+    MOVE_TASK: "Moves a task from one column to another",
+    REMOVE_TASK: "Removes a task from the list"
 };
 
 export const initColumns = columns => {
@@ -103,5 +105,23 @@ export const renameTask = (colId, taskId, title) => {
         colId,
         taskId,
         title
+    }
+}
+
+/**
+ * @param {*} task Task ID being removed
+ * @param {*} col Column ID that task currently belongs to
+ */
+export const removeTask = (task, col) => {
+    return {
+        type: actions.REMOVE_TASK,
+        task,
+        col
+    }
+}
+
+export const overTrash = () => {
+    return {
+        type: actions.DRAG_OVER_TRASH
     }
 }

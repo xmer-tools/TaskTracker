@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-import { actions, addColumn, addTask, initColumns, moveTask, renameColumn, renameTask } from './actions';
+import { actions, addColumn, addTask, initColumns, moveTask, renameColumn, renameTask, removeTask } from './actions';
 
 const socket = openSocket(window.location.origin);
 
@@ -19,6 +19,7 @@ export default store => {
     socket.on('addTask', (id, title) => safeDispatch(addTask(id, title)));
     socket.on('moveTask', (task, from, to) => safeDispatch(moveTask(task, from, to)));
     socket.on('renameTask', (colId, taskId, title) => safeDispatch(renameTask(colId, taskId, title)));
+    socket.on('removeTask', (task, col) => safeDispatch(removeTask(task, col)));
 
     // Sending actions to server
     return next => action => {
@@ -43,15 +44,22 @@ export default store => {
                 case actions.DRAG_END:
                     var dragData = store.getState().dragging;
 
+                    // If it's getting thrown in the trash
+                    if (dragData.task && dragData.target === "Trash") {
+                        store.dispatch(removeTask(dragData.task, dragData.column));
+                        socket.emit('removeTask', dragData.task, dragData.column);
+                    }
+
                     // It's a task being moved and isn't being moved to the same column
-                    if(dragData.task && dragData.column != dragData.target.column) {
+                    else if(dragData.task && dragData.column != dragData.target.column) {
                         store.dispatch(moveTask(dragData.task, dragData.column, dragData.target.column));
                         socket.emit('moveTask', dragData.task, dragData.column, dragData.target.column);
                     }
-
-
                     // TODO: it could also be a column being moved
-                    return;
+                    next(action);
+
+                    break;
+
             }
 
         next(action);
